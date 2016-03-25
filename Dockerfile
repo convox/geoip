@@ -1,21 +1,18 @@
-FROM ubuntu:14.04
+FROM gliderlabs/alpine:3.3
 
-RUN apt-get update -y && apt-get install -y curl git
+RUN apk update && apk-install curl git go && rm -rf /var/cache/apk/*
 
-RUN curl -O https://storage.googleapis.com/golang/go1.5.3.linux-amd64.tar.gz 
-RUN tar -C /usr/local -xzf go1.5.3.linux-amd64.tar.gz
-RUN rm go1.5.3.linux-amd64.tar.gz
-
-ENV GOROOT /usr/local/go
-ENV GOPATH /go
+ENV GOROOT /usr/lib/go
+ENV GOPATH /gopath
+ENV GOBIN /gopath/bin
 ENV PATH $GOROOT/bin:$GOPATH/bin:$PATH
 
-WORKDIR /go/src/github.com/mattmanning/geoip
+WORKDIR /gopath/src/github.com/mattmanning/geoip
 
 RUN curl -O http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.mmdb.gz
 RUN gunzip GeoLite2-City.mmdb.gz
 
-COPY . /go/src/github.com/mattmanning/geoip
+COPY . /gopath/src/github.com/mattmanning/geoip
 
 RUN go get github.com/gorilla/mux
 RUN go get github.com/oschwald/geoip2-golang
