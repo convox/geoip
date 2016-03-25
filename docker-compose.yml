@@ -1,0 +1,8 @@
+geoip:
+  image: convox/geoip
+  environment:
+    - GEOIP_BASIC_AUTH=false
+    - GEOIP_USERNAME=""
+    - GEOIP_PASSWORD=""
+  ports:
+    - "80:8080"
